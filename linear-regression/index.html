@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Regression Lab</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Linear Regression Lab</h1>
+      <p class="tagline">Click the plot to add points. Drag them. Watch the line learn.</p>
+    </div>
+    <button id="themeToggle" class="ghost-btn" type="button" aria-label="Toggle colour theme">Theme</button>
+  </header>
+
+  <main class="layout viz-root">
+    <!-- ------------------------------ main plot ------------------------------ -->
+    <section class="card plot-card">
+      <div class="card-head">
+        <h2>Data &amp; fit</h2>
+        <p class="legend" id="legend">
+          <span class="key"><i class="swatch swatch-points"></i>Data</span>
+          <span class="key"><i class="swatch swatch-gd"></i>Gradient descent</span>
+          <span class="key"><i class="swatch swatch-ols"></i>Best fit (OLS)</span>
+          <span class="key"><i class="swatch swatch-res"></i>Residuals</span>
+        </p>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="plot"></canvas>
+        <p class="empty-hint" id="emptyHint">Click anywhere to drop your first point</p>
+      </div>
+      <p class="hint">
+        <strong>Click</strong> to add &middot; <strong>Drag</strong> to move &middot;
+        <strong>Shift-click</strong> a point to delete
+      </p>
+    </section>
+
+    <!-- ------------------------------- sidebar ------------------------------- -->
+    <aside class="card panel">
+      <div class="card-head"><h2>Model</h2></div>
+
+      <p class="equation" id="equation">y = 0.000x + 0.000</p>
+
+      <dl class="stats">
+        <div class="stat">
+          <dt>Slope <span class="sym">m</span></dt>
+          <dd id="statM">—</dd>
+        </div>
+        <div class="stat">
+          <dt>Intercept <span class="sym">b</span></dt>
+          <dd id="statB">—</dd>
+        </div>
+        <div class="stat">
+          <dt>Cost <span class="sym">MSE</span></dt>
+          <dd id="statMse">—</dd>
+        </div>
+        <div class="stat">
+          <dt>Fit <span class="sym">R²</span></dt>
+          <dd id="statR2">—</dd>
+        </div>
+        <div class="stat">
+          <dt>Points <span class="sym">n</span></dt>
+          <dd id="statN">0</dd>
+        </div>
+        <div class="stat">
+          <dt>Iteration</dt>
+          <dd id="statIter">0</dd>
+        </div>
+      </dl>
+
+      <p class="status" id="status" role="status"></p>
+
+      <div class="card-head"><h2>Gradient descent</h2></div>
+
+      <div class="btn-row">
+        <button id="playBtn" class="primary-btn" type="button">▶ Train</button>
+        <button id="stepBtn" class="ghost-btn" type="button">Step</button>
+        <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
+      </div>
+
+      <label class="slider">
+        <span class="slider-label">
+          Learning rate <output id="lrOut">0.0100</output>
+        </span>
+        <input id="lr" type="range" min="-4" max="-0.3" step="0.01" value="-2" />
+        <span class="slider-note">Push past ~0.1 and watch it explode.</span>
+      </label>
+
+      <label class="slider">
+        <span class="slider-label">
+          Speed <output id="speedOut">5 steps / frame</output>
+        </span>
+        <input id="speed" type="range" min="1" max="50" step="1" value="5" />
+      </label>
+
+      <div class="card-head"><h2>Data</h2></div>
+
+      <div class="btn-row">
+        <button id="randomBtn" class="ghost-btn" type="button">Random data</button>
+        <button id="clearBtn" class="ghost-btn" type="button">Clear</button>
+      </div>
+
+      <label class="slider">
+        <span class="slider-label">
+          Noise <output id="noiseOut">1.2</output>
+        </span>
+        <input id="noise" type="range" min="0" max="3" step="0.1" value="1.2" />
+      </label>
+
+      <div class="card-head"><h2>Show</h2></div>
+
+      <label class="check">
+        <input id="showResiduals" type="checkbox" checked />
+        <span>Residuals (the errors being squared)</span>
+      </label>
+      <label class="check">
+        <input id="showOls" type="checkbox" checked />
+        <span>Closed-form best fit (the target)</span>
+      </label>
+      <label class="check">
+        <input id="showSquares" type="checkbox" />
+        <span>Squared-error areas</span>
+      </label>
+    </aside>
+
+    <!-- ------------------------------ loss curve ----------------------------- -->
+    <section class="card loss-card">
+      <div class="card-head">
+        <h2>Cost over time</h2>
+        <p class="sub" id="lossSub">MSE per iteration &middot; log scale</p>
+      </div>
+      <div class="canvas-wrap loss-wrap">
+        <canvas id="loss"></canvas>
+        <p class="empty-hint" id="lossHint">Press Train to trace the descent</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
